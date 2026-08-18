@@ -4,6 +4,8 @@
 
 ## Prototype link
 
+[Juno PM Live Prototype](https://ramyanagarajan22.github.io/juno-pm/dashboard.html)
+
 https://lovable.dev/projects/dc5664f5-cd2f-419c-b0bd-18150caf0a82
 
 _____
