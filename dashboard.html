@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juno PM — Dashboard Prototype</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-[#0b0f19] text-slate-100 font-sans antialiased m-0 p-0 overflow-hidden">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const INITIAL_TRANSCRIPT = `[Interview - 2026-08-12] - VP of Operations, Acme Corp (1,200 seats)
+
+Interviewer: Walk me through the biggest friction point in your weekly reporting flow.
+
+User: Honestly, it's exporting filtered data out of the current analytics dashboard. Every Friday, our regional directors spend 3+ hours manually pulling custom reports into Excel because the platform doesn't support scheduled CSV/XLSX exports with nested filter parameters.
+
+Interviewer: What happens if a report fails or data is delayed?
+
+User: We have zero visibility. Last week, a silent latency spike hit the auth pipeline, and our scheduled syncs failed without any notification. We found out 24 hours later when our CFO asked why the numbers were blank. It makes us look completely un-rigorous to leadership.
+
+Support Ticket Reference: #TK-8842 (Enterprise tier)
+Customer Quote: "If we don't get reliable scheduled exports and automated failure alerts by Q4, we will have to evaluate alternative platforms during renewal."`;
+
+    const INSIGHTS_DATA = [
+      {
+        id: 1,
+        title: "Manual Overhead in Weekly Reporting",
+        description: "Regional directors waste 3+ hours every Friday pulling custom analytics reports due to lack of scheduled exports.",
+        priority: "High",
+        sentiment: "Pain",
+        source: "VP Ops, Acme Corp",
+        tag: "Reporting & Export"
+      },
+      {
+        id: 2,
+        title: "Silent Auth Latency & Sync Failures",
+        description: "Auth pipeline latency spikes cause silent data sync failures with zero alerting or visibility for enterprise admins.",
+        priority: "Critical",
+        sentiment: "Pain",
+        source: "Support Ticket #TK-8842",
+        tag: "Platform Reliability"
+      },
+      {
+        id: 3,
+        title: "Renewal Risk on Enterprise Account",
+        description: "Acme Corp (1,200 seats) explicitly flagged renewal risk if automated reporting and alert features are missed.",
+        priority: "High",
+        sentiment: "Risk",
+        source: "Customer Renewal Note",
+        tag: "Account Churn"
+      }
+    ];
+
+    function Dashboard() {
+      const [transcript, setTranscript] = useState(INITIAL_TRANSCRIPT);
+      const [isProcessing, setIsProcessing] = useState(false);
+      const [isProcessed, setIsProcessed] = useState(false);
+      const [copied, setCopied] = useState(false);
+
+      const handleProcess = () => {
+        if (!transcript.trim()) return;
+        setIsProcessing(true);
+        setTimeout(() => {
+          setIsProcessing(false);
+          setIsProcessed(true);
+        }, 1500);
+      };
+
+      return (
+        <div className="flex flex-col h-screen w-full bg-[#0b0f19] text-slate-100 font-sans">
+          {/* Top Bar */}
+          <header className="h-14 border-b border-slate-800 bg-[#0f172a]/80 px-6 flex items-center justify-between shrink-0">
+            <div className="flex items-center space-x-3">
+              <div className="h-7 w-7 rounded-lg bg-indigo-600 flex items-center justify-center shadow-lg font-bold text-white text-xs">
+                ✨
+              </div>
+              <span className="font-semibold text-sm tracking-wide text-white">Juno PM</span>
+              <span className="text-xs text-slate-500 border border-slate-800 rounded px-1.5 py-0.5">RocketShip AI</span>
+            </div>
+            <div className="flex items-center space-x-2 text-xs text-slate-400">
+              <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+              <span>Workspace Active</span>
+            </div>
+          </header>
+
+          {/* Main 3-Column Layout */}
+          <div className="flex-1 grid grid-cols-3 gap-0 overflow-hidden min-w-[1280px]">
+            
+            {/* LEFT COLUMN: Raw Inputs */}
+            <div className="flex flex-col border-r border-slate-800/80 bg-[#0f172a]/30 p-5 overflow-hidden">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">1. Raw User Transcripts</h2>
+                <span className="text-xs text-slate-500">{transcript.length} chars</span>
+              </div>
+              
+              <div className="relative flex-1 flex flex-col">
+                <textarea
+                  value={transcript}
+                  onChange={(e) => setTranscript(e.target.value)}
+                  placeholder="Paste interview transcripts, support tickets, or executive emails here..."
+                  className="w-full flex-1 bg-[#1e293b]/50 border border-slate-800 rounded-lg p-4 text-xs font-mono text-slate-300 placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none leading-relaxed"
+                />
+              </div>
+
+              {/* Persistently Visible Button */}
+              <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between">
+                <button
+                  onClick={() => setTranscript('')}
+                  className="text-xs text-slate-500 hover:text-slate-300"
+                >
+                  Clear input
+                </button>
+                <button
+                  onClick={handleProcess}
+                  disabled={isProcessing || !transcript.trim()}
+                  className="px-4 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-xs font-medium flex items-center space-x-2 shadow-lg shadow-indigo-600/20 transition-all cursor-pointer"
+                >
+                  {isProcessing ? (
+                    <span>Synthesizing (1.5s)...</span>
+                  ) : (
+                    <span>Process Transcript →</span>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* MIDDLE COLUMN: Structured Insights */}
+            <div className="flex flex-col border-r border-slate-800/80 bg-[#0f172a]/20 p-5 overflow-y-auto">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">2. Structured Insights</h2>
+                {isProcessed && (
+                  <span className="text-[10px] font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded-full">
+                    3 Key Extracted
+                  </span>
+                )}
+              </div>
+
+              {isProcessing && (
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-2">
+                  <p className="text-xs text-slate-400 font-medium">Extracting customer pain points & tags...</p>
+                </div>
+              )}
+
+              {!isProcessing && !isProcessed && (
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-6 border border-dashed border-slate-800 rounded-xl my-4">
+                  <p className="text-xs font-medium text-slate-400">Awaiting processing</p>
+                  <p className="text-[11px] text-slate-600 mt-1 max-w-[200px]">
+                    Click <span className="text-indigo-400">"Process Transcript"</span> to generate insights.
+                  </p>
+                </div>
+              )}
+
+              {!isProcessing && isProcessed && (
+                <div className="space-y-3">
+                  {INSIGHTS_DATA.map((item) => (
+                    <div key={item.id} className="p-4 rounded-xl bg-[#1e293b]/40 border border-slate-800">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-semibold text-slate-200">{item.title}</span>
+                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded ${
+                          item.priority === 'Critical' ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                        }`}>
+                          {item.priority}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-400 leading-relaxed mb-3">{item.description}</p>
+                      <div className="flex items-center justify-between text-[11px] pt-2 border-t border-slate-800/50">
+                        <span className="text-slate-500 text-[10px]">{item.source}</span>
+                        <span className="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded">{item.tag}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* RIGHT COLUMN: Draft PRD */}
+            <div className="flex flex-col bg-[#0f172a]/10 p-5 overflow-y-auto">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">3. Draft PRD (Opportunity Brief)</h2>
+              </div>
+
+              {isProcessing && (
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
+                  <p className="text-xs text-slate-400 font-medium">Drafting Opportunity Brief...</p>
+                </div>
+              )}
+
+              {!isProcessing && !isProcessed && (
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-6 border border-dashed border-slate-800 rounded-xl my-4">
+                  <p className="text-xs font-medium text-slate-400">PRD Preview Empty</p>
+                  <p className="text-[11px] text-slate-600 mt-1 max-w-[200px]">
+                    Processed input will generate a formatted PRD preview here.
+                  </p>
+                </div>
+              )}
+
+              {!isProcessing && isProcessed && (
+                <div className="p-5 rounded-xl bg-[#1e293b]/30 border border-slate-800 text-xs leading-relaxed space-y-4 text-slate-300">
+                  <div className="border-b border-slate-800 pb-3">
+                    <h1 className="text-sm font-bold text-white mb-1">
+                      Opportunity Brief: Enterprise Scheduled Exports & Sync Health
+                    </h1>
+                    <div className="flex items-center space-x-2 text-[10px] text-slate-500">
+                      <span>Author: Juno PM</span>
+                      <span>•</span>
+                      <span>Target: Q4 Roadmap</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xs font-semibold text-indigo-400 uppercase tracking-wide mb-1">1. Problem Statement</h3>
+                    <p className="text-slate-400">
+                      Enterprise customers currently experience significant manual overhead pulling weekly analytics reports into external spreadsheet tools. Furthermore, unexpected auth latency causes silent background sync failures without admin notifications.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xs font-semibold text-indigo-400 uppercase tracking-wide mb-1">2. Key User Evidence</h3>
+                    <ul className="list-disc list-inside space-y-1 text-slate-400">
+                      <li><strong className="text-slate-300">Acme Corp (1,200 seats):</strong> Operational teams spend ~3 hrs/week manually pulling reports.</li>
+                      <li><strong className="text-slate-300">Ticket #TK-8842:</strong> 24-hour delayed detection on auth pipeline failures.</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xs font-semibold text-indigo-400 uppercase tracking-wide mb-1">3. Proposed Solution Scope</h3>
+                    <ul className="list-disc list-inside space-y-1 text-slate-400">
+                      <li><strong className="text-slate-300">Feature A:</strong> Scheduled CSV/XLSX export engine supporting recurring cron deliveries.</li>
+                      <li><strong className="text-slate-300">Feature B:</strong> Real-time Admin Health Center & Webhook Alerts for pipeline delays.</li>
+                    </ul>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-800/60">
+                    <h3 className="text-xs font-semibold text-indigo-400 uppercase tracking-wide mb-1">4. Success Metrics</h3>
+                    <p className="text-slate-400">
+                      40% reduction in customer-reported export friction tickets within 60 days post-launch; zero account churn attributable to analytics reporting in Q4.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<Dashboard />);
+  </script>
+</body>
+</html>
