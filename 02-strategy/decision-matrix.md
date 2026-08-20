@@ -1,23 +1,17 @@
 # AI Solution Decision Matrix · Juno
 
-> Module 2 · Strategy. The build / buy / fine-tune / partner call, made with the **M2 · AI Solution Decision Matrix**. Paste the tool's markdown over this file.
-
 ## The decision
 
-_What are you deciding, and why now?_
-
-_____
+Deciding whether to build an in-house triage tool, leverage off-the-shelf LLM APIs with RAG, or fine-tune a custom model to automate incoming request triage across Slack, Asana, and support channels.
 
 ## Options scored
 
 | Option | Cost | Speed | Control | Moat | Risk | Score |
 |---|---|---|---|---|---|---|
-| _Build_ | _…_ | _…_ | _…_ | _…_ | _…_ | _…_ |
-| _Buy / API_ | _…_ | _…_ | _…_ | _…_ | _…_ | _…_ |
-| _Fine-tune_ | _…_ | _…_ | _…_ | _…_ | _…_ | _…_ |
+| Build | 2 | 2 | 4 | 3 | 2 | 2.6 |
+| Buy / API | 4 | 5 | 4 | 2 | 5 | 4.0 |
+| Fine-tune | 1 | 1 | 3 | 4 | 2 | 2.2 |
 
 ## Recommendation
 
-_The chosen option and the business reason._
-
-_____
+Buy / API. Leveraging off-the-shelf LLM APIs with RAG allows us to deploy the PM triage copilot immediately with minimal upfront engineering costs and extremely low risk. It provides high control over prompt guardrails while solving the weekly 5-hour triage bottleneck without the heavy maintenance, time, or expense required to build custom infrastructure or fine-tune models from scratch.
