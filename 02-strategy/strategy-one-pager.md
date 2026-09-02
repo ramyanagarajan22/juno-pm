@@ -2,38 +2,38 @@
 
 ## 1. Problem & Workflow
 
-The Problem: Prospective attendees researching an event often have questions before they register about relevant sessions, pricing, or whether the event fits their needs but had no fast way to get answers. They'd either call support (slow, costly) or, more often, simply abandon registration without ever asking.
+The Problem: Prospective attendees abandon registration when redirected away from event details into lengthy multi-step checkout forms, or when overwhelmed trying to manually filter through 50+ sessions across 5 tracks to assess relevance. This friction causes over 40% bounce rates on the event page and high drop-off midway through the registration flow.
 
-Prevention: "Event AI Assistant" explicitly prevents attendees from abandoning registration due to an unanswered pre-registration question. By giving instant, accurate answers about sessions, pricing, and relevance at the exact moment someone is deciding whether to sign up, it removes the silent friction that was costing us registrations.
+Prevention: "Event AI Assistant" embeds directly on the event landing page to eliminate funnel drop-off. By offering instant session recommendations and gathering lead capture details (First Name, Last Name, Email, Company) directly inside a floating chat drawer, it gets attendees registered and scheduled in a single conversational interaction.
 
 ## 2. Target Metrics
 
-Cycle time: My top KPI is registration conversion rate,  how many people who start signing up actually finish. Right now, 43% of people drop off partway through, so only 57% complete registration. Goal: cut drop-off to 30%, so conversion rises to about 70%. We can measure this within 30 days of launch, every event cycle.
+Cycle time: My top KPI is registration conversion rate. Right now, over 40% of users bounce or drop off mid-flow. Goal: reduce drop-off to under 25% (raising conversion to 75%+) while reducing average time-to-register from minutes of manual browsing to under 60 seconds in-chat. We can measure this within 30 days of launch across active event marketing cycles.
 
-Leadership proof: This is the number leadership won't want us to stop tracking. If it goes up, it directly proves the agent is answering the questions that were making people give up — and it's tied straight to revenue (completed registrations), not just clicks or usage. We'll also watch two supporting signals — sessions added to agenda and fewer support tickets — but conversion rate is the one number that proves this is working.
+Leadership proof: Conversion rate directly links the AI assistant to top-line revenue and completed registrations. Supporting signals include total sessions added to agendas, lead form completion rate inside chat, and a reduction in pre-registration support tickets.
 
 ## 3. Autonomy Level
 
-Choice: Copilot. The agent answers attendee questions, gives session recommendations, and can take actions like adding a session to an agenda but only after the user explicitly clicks to confirm. If the agent can't confidently answer a question, it routes the attendee to a human rather than guessing.
+Choice: Copilot. The assistant answers questions, captures registration inputs, and surfaces interactive session cards. Actions like finalizing registration or booking a session into an agenda require explicit user button clicks. If confidence or data freshness is low, it routes the user to a human agent.
 
-Explicitly avoiding: Agent. We are not letting the system take actions on a user's behalf without in-the-moment confirmation — e.g., no auto-adding sessions based on inferred interest, no auto-registering, no silent changes to an attendee's agenda. A wrong guess baked into a paying attendee's schedule erodes trust in a way a wrong FAQ answer doesn't so every action stays one click away from the user, never fully autonomous.
+Explicitly avoiding: Autonomous Agent & Ungated Booking. We do not permit autonomous actions (no auto-registering, no auto-adding sessions based on inferred interest). Furthermore, the assistant enforces a strict gate: no attendee can book a session without first completing registration details.
 
 ## 4. Data & Model Approach
 
-Chosen Approach: Ground (RAG). The agent retrieves answers from our live, event-specific data sessions, speakers, capacity, pricing — before responding, so every answer reflects the actual state of that specific event, even as details change up until (and during) the event itself.
+Chosen Approach: Buy / API + Grounded Knowledge (RAG). We leverage off-the-shelf LLM APIs combined with a dynamic RAG pipeline. RAG retrieves live session schedules, speaker bios, pricing tiers, and real-time room capacity to keep answers 100% grounded and up to date.
 
-Explicitly avoiding: Buy (LLM). We're not letting the agent answer from general model knowledge alone. With many events running simultaneously and details (like session capacity) changing daily or even hour-by-hour during the event, an ungrounded answer could easily be plausible-sounding but wrong  confidently telling someone a session is open when it's actually full. That risk is unacceptable on a branded, trust-sensitive surface. (We're also ruling out fine-tuning for the same underlying reason: our event data is too dynamic to bake into model weights without constant retraining.)
+Explicitly avoiding: Ungrounded LLMs & Custom Fine-Tuning. We are not relying on general model knowledge alone (which leads to hallucinated seat availability) nor fine-tuning a custom model. Because event schedules and capacity change constantly up to and during the event, fine-tuning carries prohibitive retraining costs and latency.
 
 ## 5. Risks & Mitigations
 
-Risk: During a live event, session data (especially capacity) can change within minutes — a session fills up, gets moved, or is cancelled. If the agent's retrieved data lags even slightly behind reality, it can confidently tell an attendee a session is available, and the attendee then one-click adds it to their agenda — baking a wrong, capacity-limited session into their real schedule. By the time they discover the error, they've missed the session they actually wanted, with no room left to fix it.
+Risk: During peak registration, session seat capacity updates rapidly. If retrieved RAG context lags behind live seat inventory, the assistant might display "Seats Available" for a session that just filled up.
 
-Mitigation: Enforce a strict data freshness threshold (e.g., capacity data no older than X minutes) directly in the retrieval layer. If the agent can't confirm data is fresh enough, it does not state availability as fact — instead it shows a "confirm availability" prompt or routes the user to the live registration page before allowing the one-click add.
+Mitigation: Enforce strict data freshness thresholds directly in the retrieval pipeline. If capacity data cannot be verified within the freshness window, the card falls back to a "Check Live Availability" status, prompting a real-time inventory check before permitting a 1-click booking.
 
 ## 6. V1 Scope
 
-In scope (v1): Pre-registration support only — answering general event FAQs, recommending sessions/activities, and helping attendees register and add sessions to their agenda (via one-click, always user-confirmed).
+In scope (v1): Pre-registration support on the Connect 2026 page—answering session/pricing FAQs, inline lead capture (Name, Email, Company), gated 1-click agenda booking, and smart recommendation rotation across 5 event tracks.
 
-Out (1): No autonomous actions. The agent will never auto-register an attendee or auto-add sessions to their agenda without an explicit click consistent with the Copilot boundary.
+Out (1): No direct landing-page bookings. Clicking "Add to agenda" on page cards opens the Juno drawer and surfaces the session in chat to enforce the registration gate, ensuring Juno remains the single point of actual booking.
 
-Out (2): No during/post-event support. The agent won't handle live-event questions (e.g., "what's happening right now"), session summaries, or on-demand content recommendations in v1. For those, it will point attendees to the relevant page (e.g., on-demand library, live schedule) rather than attempt to answer directly — keeping v1 scoped to the pre-registration problem.
+Out (2): No during/post-event support. Live-event navigation, session summaries, or post-event video access are out of scope for V1, keeping the focus entirely on solving pre-registration bounce rates.
