@@ -1,4 +1,4 @@
-# AI Solution Decision Matrix · Juno
+# AI Solution Decision Matrix · Juno AI Event Assistant
 
 ## The decision
 
