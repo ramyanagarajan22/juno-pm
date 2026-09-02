@@ -52,12 +52,4 @@ Failure/Escalation: Registration API returns an error or invalid user input (e.g
 Timeout: No response from attendee for 5 minutes during data collection.
 - **Fails safe when:** Agent can READ Event DB and WRITE to Registration, Booking, and Email APIs. CANNOT modify existing event schedules, edit existing attendee profiles, or delete session records.
 
-## Self-review
 
-- [ ] Goal is one sentence and names the value frame.
-- [ ] Trigger is a precise, testable condition.
-- [ ] Pattern is chosen with a defensible reason.
-- [ ] At least 3 stop conditions, including escalation.
-- [ ] Each memory type named (in or out).
-- [ ] Every tool lists scope (read-only vs write) and a schema.
-- [ ] Read/write boundaries match the AI PRD (M3).
