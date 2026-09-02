@@ -28,7 +28,9 @@ Operate strictly on: (a) Connect 2026 event details and pricing tiers (Individua
 
 Response Schema:
 Text Response: Maximum 2 sentences summarizing the next step.
+
 Registration Card Schema: Must include First Name, Last Name, Email, Company, and a [Complete Registration] button.
+
 Session Card Schema: Must include Session Title, Speaker, Track, Day/Time, Capacity Tag, and a [Confirm & Book Session] button.
 
 ## Few-shot examples
