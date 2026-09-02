@@ -1,28 +1,20 @@
-# Lovable Prototype · Juno
-
-> Module 1 · Prompting. The clickable Lovable prototype that brings the system prompt to life.
+# Prototype · Juno
 
 ## Prototype link
 
-[Juno PM Live Prototype](https://ramyanagarajan22.github.io/juno-pm/dashboard.html)
-
-https://lovable.dev/projects/dc5664f5-cd2f-419c-b0bd-18150caf0a82
-
-_____
+https://claude.ai/public/artifacts/82e108b9-83ad-4a51-8125-118345156668
 
 ## What it demonstrates
 
-It turns messy customer feedback (like interview notes, support tickets, and emails) into tagged key insights and a clean, ready-to-use PRD outline—all on a single screen without jumping between tools.
-
-_____
+Proves an embedded AI registration copilot can guide an attendee from session inquiry to lead capture (First Name, Last Name, Email, Company) and one-click agenda booking directly on an event registration landing page.
 
 ## Debrief
 
 - **What worked:**
-The clean three-column layout is easy to scan, the "Process Transcript" button stays visible, and the 1.5-second loading animation makes the AI synthesis feel fast and smooth.
+- The conversational chat drawer rendered smoothly over the landing page. It correctly enforced gated session booking (requiring attendee registration before booking) and dynamically presented interactive session cards with live capacity badges and explicit action buttons.
 
 - **What broke / felt like a toy:**
-The output uses fixed sample data and a fake loading timer instead of calling a real AI service in the background.
+- The session data and registration confirmation are hardcoded UI mocks rather than live dynamic database records. The chat state resets on page refresh, and it cannot yet query real-time backend seat availability APIs.
 
 - **What I'd change next pass:**
-Connect a real AI endpoint, let product managers edit sections of the PRD directly on the page, and add a one-click "Export to Jira" button.
+- Connect a dynamic backend database (or vector search index) to enable real-time RAG context retrieval for session schedules, enforce strict data freshness thresholds for seat capacity, and add persistent user session storage.
