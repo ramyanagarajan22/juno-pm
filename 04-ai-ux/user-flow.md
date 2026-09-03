@@ -48,11 +48,4 @@ Dismissing a session card only applies to session recommendations (not FAQ or te
 
 If Juno can't confidently answer a question, it tells the user it's unable to help with that specific question and routes them to the FAQ page, support page, or a support contact number/link — rather than guessing.
 
-## Self-review
 
-- [ ] Trigger fires on the earliest possible signal, no manual “Start AI” click.
-- [ ] At least one breadcrumb message turns latency into transparency.
-- [ ] Maneuver matches the M2 value prop (Automation / Augmentation / Insights / Personalization).
-- [ ] Every automated decision has a working kill switch.
-- [ ] Fail-safe path is explicit. No dead end with a bad AI result.
-- [ ] Hidden logic references M3 PRD specs (Top-K, latency target, knowledge base).
