@@ -4,7 +4,7 @@
 
 The Problem: Prospective attendees abandon registration when redirected away from event details into lengthy multi-step checkout forms, or when overwhelmed trying to manually filter through 50+ sessions across 5 tracks to assess relevance. This friction causes over 40% bounce rates on the event page and high drop-off midway through the registration flow.
 
-Prevention: "Event AI Assistant" embeds directly on the event landing page to eliminate funnel drop-off. By offering instant session recommendations and gathering lead capture details (First Name, Last Name, Email, Company) directly inside a floating chat drawer, it gets attendees registered and scheduled in a single conversational interaction.
+High level strategy: "Event AI Assistant" embeds directly on the event landing page to eliminate funnel drop-off. By offering instant session recommendations and gathering lead capture details (First Name, Last Name, Email, Company) directly inside a floating chat drawer, it gets attendees registered and scheduled in a single conversational interaction.
 
 ## 2. Target Metrics
 
