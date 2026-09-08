@@ -14,7 +14,7 @@ This repo is my final project for the AI Product Management Certification — **
 
 ### M1 · Prompting
 - **System prompt** — [`01-prompting/system-prompt.md`](01-prompting/system-prompt.md)
-- **Prototype** — [https://your-build-tool/share/your-juno-prototype](https://claude.ai/public/artifacts/82e108b9-83ad-4a51-8125-118345156668)
+- **Prototype** — (https://claude.ai/public/artifacts/82e108b9-83ad-4a51-8125-118345156668)
 
 ### M2 · Strategy
 - **Decision matrix** — [`02-strategy/decision-matrix.md`](02-strategy/decision-matrix.md)
