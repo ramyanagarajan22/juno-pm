@@ -6,7 +6,7 @@ https://claude.ai/public/artifacts/82e108b9-83ad-4a51-8125-118345156668
 
 ## What it demonstrates
 
-Proves an embedded AI registration/agenda builder copilot can guide a prospective attendee to register for an upcoming event seamlessly and add the favorite sessions to their agenda directly on an event registration landing page and be prepared for the upcoming event.
+Proves an embedded AI registration/agenda builder copilot can guide a prospective event attendee to register for an upcoming event seamlessly and add favorite sessions to their agenda directly on an event registration landing page and be prepared for the upcoming event.
 
 ## Debrief
 
